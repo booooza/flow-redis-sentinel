@@ -54,6 +54,7 @@ Flow_Mvc_Routing_Route:
     service: 'mymaster'
     password: 'a-very-long-password'
     database: 0
+    sentinelTimeout: 0.200
 
 Flow_Mvc_Routing_Resolve:
   backend: 'Flownative\RedisSentinel\RedisBackend'

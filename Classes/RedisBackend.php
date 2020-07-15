@@ -66,6 +66,11 @@ class RedisBackend extends IndependentAbstractBackend implements TaggableBackend
     protected $sentinels = [];
 
     /**
+     * @var float
+     */
+    protected $sentinelTimeout = 0.100;
+
+    /**
      * @var string
      */
     protected $service = 'mymaster';
@@ -413,6 +418,16 @@ class RedisBackend extends IndependentAbstractBackend implements TaggableBackend
     }
 
     /**
+     * Sets a timeout for connections to sentinels.
+     *
+     * @param float|string $timeout Timeout value.
+     */
+    public function setSentinelTimeout($timeout): void
+    {
+        $this->sentinelTimeout = (float)$timeout;
+    }
+
+    /**
      * @param string $service
      */
     public function setService(string $service): void
@@ -518,6 +533,7 @@ class RedisBackend extends IndependentAbstractBackend implements TaggableBackend
             $connectionParameters = $this->sentinels;
             $options['replication'] = 'sentinel';
             $options['service'] = $this->service;
+            $options['sentinel_timeout'] = $this->sentinelTimeout;
         } else {
             $connectionParameters = 'tcp://' . $this->hostname . ':' . $this->port;
         }
